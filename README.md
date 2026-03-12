@@ -1,6 +1,6 @@
 # bus-delay-tracker
 
-Monitors North Bay Ontario Transit routes via the Google Maps Directions API and sends SMS alerts to your phone via AWS SNS when delays are detected.
+Monitors Transit routes via the Google Maps Directions API and sends SMS alerts to your phone via AWS SNS when delays are detected.
 
 ## How it works
 
