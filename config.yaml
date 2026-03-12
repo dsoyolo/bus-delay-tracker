@@ -1,0 +1,35 @@
+# Bus Delay Tracker Configuration
+# Configure your routes and alert settings here
+
+routes:
+  - name: "Morning Commute"
+    origin: "North Bay, ON"         # e.g. street address or landmark
+    destination: "Downtown North Bay, ON"
+    # Departure time to check (24h format, local time)
+    check_time: "07:30"
+    # Days to monitor: mon, tue, wed, thu, fri, sat, sun
+    days: ["mon", "tue", "wed", "thu", "fri"]
+    # Alert if journey is this many minutes longer than baseline
+    delay_threshold_minutes: 5
+    # Optional: waypoints to ensure correct route
+    waypoints: []
+
+  # Add more routes as needed:
+  # - name: "Evening Return"
+  #   origin: "Downtown North Bay, ON"
+  #   destination: "North Bay, ON"
+  #   check_time: "17:00"
+  #   days: ["mon", "tue", "wed", "thu", "fri"]
+  #   delay_threshold_minutes: 5
+
+alerts:
+  # Your phone number in E.164 format (e.g. +16131234567)
+  phone_number: "+1XXXXXXXXXX"
+  # How many minutes before check_time to send the alert
+  alert_lead_minutes: 15
+  # Don't send more than one alert per route per day
+  cooldown_hours: 12
+
+polling:
+  # How often to check (in minutes) when running in continuous mode
+  interval_minutes: 5
