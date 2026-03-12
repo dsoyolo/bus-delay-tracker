@@ -1,0 +1,11 @@
+[project]
+name = "bus-delay-tracker"
+version = "0.1.0"
+description = "Monitors transit routes and sends SMS alerts when delays are detected"
+requires-python = ">=3.13"
+dependencies = [
+    "apscheduler>=3.11.2",
+    "boto3>=1.42.66",
+    "googlemaps>=4.10.0",
+    "pyyaml>=6.0.3",
+]
