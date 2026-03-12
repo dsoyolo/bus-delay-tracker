@@ -14,10 +14,10 @@ Monitors North Bay Ontario Transit routes via the Google Maps Directions API and
 ### 1. Install dependencies
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+uv sync
 ```
+
+This creates a `.venv` and installs all dependencies from `pyproject.toml` and the lockfile (`uv.lock`) in one step.
 
 ### 2. Store your Google Maps API key in AWS Secrets Manager
 
@@ -70,7 +70,7 @@ alerts:
 Run this once on a normal (non-delayed) day near your usual commute time:
 
 ```bash
-python tracker.py --learn-baseline
+uv run tracker.py --learn-baseline
 ```
 
 This saves journey times to `baseline.json`.
@@ -79,17 +79,17 @@ This saves journey times to `baseline.json`.
 
 **One-shot check:**
 ```bash
-python tracker.py --check-now
+uv run tracker.py --check-now
 ```
 
 **Continuous daemon** (polls every N minutes as configured):
 ```bash
-python tracker.py --daemon
+uv run tracker.py --daemon
 ```
 
 **Run as a cron job** (checks every 5 minutes on weekday mornings):
 ```cron
-*/5 7-9 * * 1-5 cd /path/to/bus-delay-tracker && .venv/bin/python tracker.py --check-now
+*/5 7-9 * * 1-5 cd /path/to/bus-delay-tracker && uv run tracker.py --check-now
 ```
 
 ## AWS SNS setup

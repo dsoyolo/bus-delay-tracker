@@ -5,3 +5,4 @@ __pycache__/
 baseline.json
 .venv/
 venv/
+main.py
