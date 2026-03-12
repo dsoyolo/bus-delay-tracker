@@ -21,21 +21,20 @@ import logging
 import os
 import sys
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import googlemaps
 import yaml
 from apscheduler.schedulers.blocking import BlockingScheduler
-from dotenv import load_dotenv
 
+import secrets as app_secrets
 from notifier import SNSNotifier
 
 # ---------------------------------------------------------------------------
 # Setup
 # ---------------------------------------------------------------------------
-load_dotenv()
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -214,7 +213,7 @@ def check_all_routes() -> None:
     baseline = load_baseline()
     alert_state = load_alert_state()
 
-    gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
+    gmaps = googlemaps.Client(key=app_secrets.get("google_maps_api_key"))
     notifier = SNSNotifier()
 
     for route in config["routes"]:
@@ -231,7 +230,7 @@ def learn_baseline() -> None:
     Run this on a normal (non-delayed) day during typical commute conditions.
     """
     config = load_config()
-    gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
+    gmaps = googlemaps.Client(key=app_secrets.get("google_maps_api_key"))
     baseline = load_baseline()
 
     for route in config["routes"]:
@@ -273,13 +272,6 @@ def main() -> None:
     group.add_argument("--learn-baseline", action="store_true",
                        help="Record current journey times as baselines")
     args = parser.parse_args()
-
-    missing = [v for v in ("GOOGLE_MAPS_API_KEY", "AWS_ACCESS_KEY_ID",
-                            "AWS_SECRET_ACCESS_KEY", "AWS_REGION")
-               if not os.environ.get(v)]
-    if missing:
-        logger.error("Missing required environment variables: %s", ", ".join(missing))
-        sys.exit(1)
 
     if args.learn_baseline:
         learn_baseline()

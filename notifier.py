@@ -10,15 +10,15 @@ logger = logging.getLogger(__name__)
 
 
 class SNSNotifier:
-    """Sends SMS alerts via AWS SNS."""
+    """Sends SMS alerts via AWS SNS.
+
+    AWS credentials are resolved automatically via the boto3 credential chain:
+    IAM role > ~/.aws/credentials > environment variables. No keys are read here.
+    """
 
     def __init__(self):
-        self.client = boto3.client(
-            "sns",
-            region_name=os.environ["AWS_REGION"],
-            aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
-            aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
-        )
+        region = os.environ.get("AWS_REGION", "ca-central-1")
+        self.client = boto3.client("sns", region_name=region)
 
     def send_sms(self, phone_number: str, message: str) -> bool:
         """
